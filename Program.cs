@@ -7,7 +7,7 @@ var services = new ServiceCollection();
 services.AddCsla(o => o
     .DataPortal(opts => opts.ClientSideDataPortal(client => client
         .UseLocalProxy()
-        .AutoCloneOnUpdate = false)));
+        .AutoCloneOnUpdate = false))); // When setting this to true, the issue does not occur
 
 var prvd = services.BuildServiceProvider();
 
