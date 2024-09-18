@@ -6,7 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 var services = new ServiceCollection();
 services.AddCsla(o => o
     .DataPortal(opts => opts.ClientSideDataPortal(client => client
-        .UseLocalProxy()
+        .UseLocalProxy(
+            // Possible fix:
+            //lp => lp.UseLocalScope = false
+            )
         .AutoCloneOnUpdate = false))); // When setting this to true, the issue does not occur
 
 var prvd = services.BuildServiceProvider();
