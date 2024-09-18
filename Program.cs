@@ -1,10 +1,19 @@
-﻿using CslaIServiceProviderDisposedException;
+﻿using Csla.Configuration;
+using Csla;
+using CslaIServiceProviderDisposedException;
 using Microsoft.Extensions.DependencyInjection;
 
 var services = new ServiceCollection();
-services.SetupCslaWithLocalProxy();
+services.AddCsla(o => o
+    .DataPortal(opts => opts.ClientSideDataPortal(client => client
+        .UseLocalProxy()
+        .AutoCloneOnUpdate = false)));
 
-var portal = CslaServices.DataPortalFactory.GetPortal<DataPortalExceptionBusinessObject>();
+var prvd = services.BuildServiceProvider();
+
+var dataPortalFactory = prvd.GetRequiredService<IDataPortalFactory>();
+
+var portal = dataPortalFactory.GetPortal<DataPortalExceptionBusinessObject>();
 
 var obj = await portal.FetchAsync();
 obj.Name = "Test";
